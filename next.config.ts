@@ -3,12 +3,35 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: process.env.STANDALONE_BUILD ? "standalone" : undefined,
+  output: process.env.STANDALONE_BUILD
+    ? "standalone"
+    : process.env.CLOUDFLARE_BUILD
+      ? "export"
+      : undefined,
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",
     },
+    // Disable client-side trace metadata for Cloudflare
+    clientTraceMetadata: process.env.CLOUDFLARE_BUILD
+      ? undefined
+      : ["function"],
   },
+  // Cloudflare Pages compatibility
+  ...(process.env.CLOUDFLARE_BUILD && {
+    trailingSlash: true,
+    images: {
+      unoptimized: true,
+    },
+    // Skip type checking during Cloudflare build (handle separately)
+    typescript: {
+      ignoreBuildErrors: false,
+    },
+    // Skip ESLint during Cloudflare build (handle separately)
+    eslint: {
+      ignoreDuringBuilds: false,
+    },
+  }),
 };
 
 export default withSentryConfig(nextConfig, {
