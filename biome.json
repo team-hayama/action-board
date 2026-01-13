@@ -8,15 +8,12 @@
   "files": {
     "ignoreUnknown": false,
     "ignore": [
-      "**/.vercel/**",
       "**/.next/**",
       "**/node_modules/**",
       "**/supabase/.temp/**",
       "**/playwright-report/**",
       "**/coverage/**",
-      "**/mobile_flutter/**",
-      "**/tests/**",
-      "**/bun/**"
+      "**/mobile_flutter/**"
     ]
   },
   "formatter": {
@@ -30,7 +27,10 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "warn"
+      }
     }
   },
   "overrides": [

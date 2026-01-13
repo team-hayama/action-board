@@ -68,12 +68,7 @@ temp
 # csv export
 users-prefecture-export.csv
 
-# Claude Code and temp directories
-.serena/
-.tmp/
+.mcp.json
 
-# Lock files (keeping only npm)
-bun.lock
-
-# Backup files
-~
+# serena mcp
+/.serena
