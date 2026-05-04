@@ -36,9 +36,13 @@ yarn-error.log*
 .env*.local
 .env*.test
 .env
+.env.cloudflare
 
 # vercel
 .vercel
+
+# cloudflare
+.cloudflare-output
 
 # typescript
 *.tsbuildinfo
@@ -79,4 +83,7 @@ users-prefecture-export.csv
 
 # Claude Code temp files
 .claude/tmp/
+/.tmp/
 
+# Backup files
+/~
