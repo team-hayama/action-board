@@ -101,7 +101,7 @@ export function CopyrightSection() {
           </div>
         </div>
         <p className="text-sm text-muted-foreground text-center mt-4">
-          © 2025 Team Mirai. All rights reserved.
+          © 2025 Team Hayama. All rights reserved.
         </p>
       </div>
     </div>

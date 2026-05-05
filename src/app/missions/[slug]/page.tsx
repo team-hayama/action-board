@@ -40,6 +40,8 @@ import {
   notoSansJP,
 } from "@/lib/utils/metadata";
 
+export const runtime = "edge";
+
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
   params: Promise<{ slug: string }>;

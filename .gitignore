@@ -38,6 +38,13 @@ yarn-error.log*
 .env
 .env.cloudflare
 
+# Claude Code session data (per-developer)
+.claude/history/
+.claude/logs/
+.claude/sessions/
+.claude/sessions.db
+.claude/tmp/
+
 # vercel
 .vercel
 

@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getUserActivityTimeline } from "@/features/user-activity/services/timeline";
 
+export const runtime = "edge";
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },

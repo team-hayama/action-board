@@ -8,6 +8,8 @@ import { getProfile, getUser } from "@/features/user-profile/services/profile";
 import { PREFECTURES } from "@/lib/constants/prefectures";
 import { getCurrentSeasonId } from "@/lib/loaders/seasons-loaders";
 
+export const runtime = "edge";
+
 interface PageProps {
   searchParams: Promise<{
     prefecture?: string;

@@ -4,11 +4,11 @@ categories:
     sort_no: 50
     category_kbn: DEFAULT
   - slug: follow-teammirai
-    title: チームみらいをフォローしよう
+    title: チームはやまをフォローしよう
     sort_no: 100
     category_kbn: DEFAULT
   - slug: learn-about-teammirai
-    title: チームみらいのことを知ろう
+    title: チームはやまのことを知ろう
     sort_no: 200
     category_kbn: DEFAULT
   - slug: join-community

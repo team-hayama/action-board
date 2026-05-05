@@ -13,16 +13,16 @@ export const defaultUrl =
 // ==========================================
 
 export const config = {
-  title: "チームみらい アクションボード",
+  title: "チームはやま アクションボード",
   description:
-    "政治活動をもっと身近に。楽しく政治参加に取り組める、チームみらいのアクションボード。",
+    "政治活動をもっと身近に。楽しく政治参加に取り組める、チームはやまのアクションボード。",
   defaultImage: "/img/ogp-default.png?v=20250714",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
     ],
-    apple: "/apple-icon.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 

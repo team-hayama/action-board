@@ -3,6 +3,8 @@ import Link from "next/link";
 import { FormMessage, type Message } from "@/components/common/form-message";
 import SignInForm from "@/features/auth/components/sign-in-form";
 
+export const runtime = "edge";
+
 export default async function Login(props: {
   searchParams: Promise<Message & { returnUrl?: string }>;
 }) {

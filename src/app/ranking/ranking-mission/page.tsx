@@ -10,6 +10,8 @@ import {
 } from "@/features/ranking/loaders/ranking-loaders";
 import { getCurrentSeasonId } from "@/lib/loaders/seasons-loaders";
 
+export const runtime = "edge";
+
 interface PageProps {
   searchParams: Promise<{
     missionId?: string;

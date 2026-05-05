@@ -6,9 +6,12 @@ import {
 } from "@/features/map-posting/loaders/posting-events-loaders";
 import { getUser } from "@/features/user-profile/services/profile";
 
+export const dynamic = "force-dynamic";
+export const runtime = "edge";
+
 export const metadata: Metadata = {
-  title: "チームみらいポスティングマップ",
-  description: "チームみらいポスティングマップ",
+  title: "チームはやまポスティングマップ",
+  description: "チームはやまポスティングマップ",
 };
 
 export default async function PostingPage() {

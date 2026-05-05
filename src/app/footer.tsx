@@ -29,7 +29,7 @@ export default function Footer() {
             <div className="relative w-full max-w-[756px] h-[157px]">
               <Image
                 src="/img/hero-people.svg"
-                alt="チームみらいの仲間たち"
+                alt="チームはやまの仲間たち"
                 fill
                 className="object-contain object-bottom"
               />

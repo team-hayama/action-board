@@ -33,7 +33,13 @@ export function createClient(): SupabaseClient<Database> {
             const cookieStore = await cookies();
             return cookieStore.getAll();
           },
-          async setAll(cookiesToSet) {
+          async setAll(
+            cookiesToSet: Array<{
+              name: string;
+              value: string;
+              options?: Record<string, unknown>;
+            }>,
+          ) {
             try {
               const { cookies } = await import("next/headers");
               const cookieStore = await cookies();
@@ -47,7 +53,7 @@ export function createClient(): SupabaseClient<Database> {
             }
           },
         },
-      });
+      }) as unknown as SupabaseClient<Database>;
     } catch (_error) {
       // next/headersが利用できない場合（テスト環境など）はシンプルなServerClientを返す
       return createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
@@ -55,12 +61,15 @@ export function createClient(): SupabaseClient<Database> {
           getAll: () => [],
           setAll: () => {},
         },
-      });
+      }) as unknown as SupabaseClient<Database>;
     }
   }
 
   // クライアントサイド: BrowserClient
-  return createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
+  return createBrowserClient<Database>(
+    supabaseUrl,
+    supabaseAnonKey,
+  ) as unknown as SupabaseClient<Database>;
 }
 
 /**

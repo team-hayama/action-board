@@ -9,6 +9,8 @@
     "ignoreUnknown": false,
     "includes": [
       "**",
+      "!**/.cloudflare-output",
+      "!**/.vercel",
       "!**/.next",
       "!**/node_modules",
       "!**/.pnpm-store",
@@ -16,7 +18,8 @@
       "!**/playwright-report",
       "!**/coverage",
       "!**/mobile_flutter",
-      "!**/supabase/templates"
+      "!**/supabase/templates",
+      "!**/bun"
     ]
   },
   "formatter": {

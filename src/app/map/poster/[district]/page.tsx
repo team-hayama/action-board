@@ -14,6 +14,9 @@ import {
 import { getDistrictsWithBoards } from "@/features/map-poster/loaders/poster-boards-loaders";
 import { getUser } from "@/features/user-profile/services/profile";
 
+export const dynamic = "force-dynamic";
+export const runtime = "edge";
+
 export async function generateMetadata({
   params,
 }: {

@@ -5,6 +5,8 @@ import { createAdminClient } from "@/lib/supabase/adminClient";
 import { normalizeJoinResult } from "@/lib/utils/batch-helpers";
 import { executeChunkedQuery } from "@/lib/utils/supabase-utils";
 
+export const runtime = "edge";
+
 // 型定義を明示（Supabaseの!innerJOINが配列を返す可能性を考慮）
 type AchievementWithMission = {
   id: string;

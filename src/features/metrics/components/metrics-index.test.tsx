@@ -95,7 +95,7 @@ describe("Metrics", () => {
     it("メトリクスが正しくレンダリングされる", async () => {
       render(await Metrics());
 
-      expect(screen.getByText("チームみらいの活動状況🚀")).toBeInTheDocument();
+      expect(screen.getByText("チームはやまの活動状況🚀")).toBeInTheDocument();
       expect(screen.getByText("動画再生回数")).toBeInTheDocument();
       expect(screen.getByText("動画本数")).toBeInTheDocument();
       expect(screen.getByText("サポーター数")).toBeInTheDocument();
