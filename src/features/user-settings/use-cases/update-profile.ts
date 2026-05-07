@@ -1,4 +1,3 @@
-import { randomBytes } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { PREFECTURES } from "@/lib/constants/prefectures";
@@ -7,7 +6,16 @@ import type { HubSpotClient } from "../types/hubspot-client";
 import type { MailClient } from "../types/mail-client";
 
 function generateReferralCode(length = 8): string {
-  return randomBytes(length).toString("base64url").slice(0, length);
+  const bytes = new Uint8Array(length);
+  crypto.getRandomValues(bytes);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++)
+    binary += String.fromCharCode(bytes[i]);
+  return btoa(binary)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "")
+    .slice(0, length);
 }
 
 export type UpdateProfileInput = {

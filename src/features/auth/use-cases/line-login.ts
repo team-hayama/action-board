@@ -1,7 +1,15 @@
-import { randomBytes } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseIdTokenPayload } from "@/lib/utils/jwt-utils";
 import type { LineApiClient } from "../types/line-api-client";
+
+function randomBase64(byteLength: number): string {
+  const bytes = new Uint8Array(byteLength);
+  crypto.getRandomValues(bytes);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++)
+    binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
 
 export type LineLoginInput = {
   code: string;
@@ -141,7 +149,7 @@ export async function lineLogin(
   }
 
   // 4. 一時パスワードを設定
-  const tempPassword = randomBytes(32).toString("base64");
+  const tempPassword = randomBase64(32);
   const { error: passwordError } =
     await adminSupabase.auth.admin.updateUserById(userId, {
       password: tempPassword,
