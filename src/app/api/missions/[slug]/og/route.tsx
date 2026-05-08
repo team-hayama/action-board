@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { getMissionPageData } from "@/features/mission-detail/services/mission-detail";
 import { formatTitleWithLineBreaks, isVotingMission } from "./og-helpers";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // キャッシュ用Mapを定義（メモリキャッシュ）- completeタイプのみキャッシュ
 // キーはslugベースで管理

@@ -12,18 +12,9 @@ jest.mock("mailgun.js", () => ({
   default: mockMailgunConstructor,
 }));
 
-// Mock fs for welcome mail
-jest.mock("node:fs/promises", () => ({
-  __esModule: true,
-  default: { readFile: jest.fn() },
-  readFile: jest.fn(),
-}));
-
 // Required env vars (checked at module load)
 process.env.MAILGUN_API_KEY = "test-api-key";
 process.env.MAILGUN_DOMAIN = "example.com";
-
-import fs from "node:fs/promises";
 
 describe("mail service", () => {
   beforeEach(() => {
@@ -43,7 +34,7 @@ describe("mail service", () => {
       });
 
       expect(mockCreate).toHaveBeenCalledWith("example.com", {
-        from: '"チームみらい" <noreply@example.com>',
+        from: '"チームはやま" <noreply@example.com>',
         to: "user@example.com",
         subject: "Hello",
         html: "<p>Hi</p>",
@@ -74,44 +65,24 @@ describe("mail service", () => {
   });
 
   describe("sendWelcomeMail", () => {
-    it("テンプレートを読み込んでウェルカムメールを送信する", async () => {
-      (fs.readFile as jest.Mock).mockResolvedValue("<html>welcome</html>");
+    it("インラインテンプレートでウェルカムメールを送信する", async () => {
       mockCreate.mockResolvedValue({ id: "msg-welcome" });
       const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
       const { sendWelcomeMail } = require("./mail");
       await sendWelcomeMail("new@example.com");
 
-      expect(fs.readFile).toHaveBeenCalledWith(
-        expect.stringContaining("public/welcome.html"),
-        "utf8",
-      );
       expect(mockCreate).toHaveBeenCalledWith(
         "example.com",
         expect.objectContaining({
           to: "new@example.com",
           subject:
-            "「チームみらい」アクションボードに登録いただきありがとうございます",
-          html: "<html>welcome</html>",
+            "「チームはやま」アクションボードに登録いただきありがとうございます",
+          html: expect.stringContaining("チームはやま"),
         }),
       );
 
       logSpy.mockRestore();
-    });
-
-    it("テンプレート読み込み失敗時はエラーを投げる", async () => {
-      (fs.readFile as jest.Mock).mockRejectedValue(new Error("ENOENT"));
-      const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-
-      const { sendWelcomeMail } = require("./mail");
-
-      await expect(sendWelcomeMail("new@example.com")).rejects.toThrow(
-        "メールテンプレートが見つかりません",
-      );
-      expect(mockCreate).not.toHaveBeenCalled();
-      expect(errSpy).toHaveBeenCalled();
-
-      errSpy.mockRestore();
     });
   });
 });

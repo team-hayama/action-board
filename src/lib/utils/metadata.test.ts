@@ -22,7 +22,7 @@ describe("defaultUrl", () => {
 
 describe("config", () => {
   test("タイトルが正しく設定されている", () => {
-    expect(config.title).toBe("チームみらい アクションボード");
+    expect(config.title).toBe("チームはやま アクションボード");
   });
 
   test("説明が正しく設定されている", () => {
@@ -37,11 +37,11 @@ describe("config", () => {
     expect(config.icons.icon).toHaveLength(2);
     expect(config.icons.icon[0]).toEqual({ url: "/favicon.ico", sizes: "any" });
     expect(config.icons.icon[1]).toEqual({
-      url: "/icon.png",
+      url: "/favicon.png",
       type: "image/png",
       sizes: "32x32",
     });
-    expect(config.icons.apple).toBe("/apple-icon.png");
+    expect(config.icons.apple).toBe("/apple-touch-icon.png");
   });
 });
 
