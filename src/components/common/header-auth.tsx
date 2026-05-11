@@ -47,6 +47,18 @@ export default async function AuthButton() {
             <Link href="/map/poster-residential">私有地ポスターマップ</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
+            <Link href="/opinions">意見投稿</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <a
+              href="https://www.town.hayama.lg.jp/gikai/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              葉山町議会
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <OnboardingButton
               variant="link"
               className="w-full justify-start p-0 h-auto text-sm"

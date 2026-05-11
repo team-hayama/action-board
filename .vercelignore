@@ -1,0 +1,10 @@
+/terraform/
+.terraform/
+*.tfstate
+*.tfstate.*
+.git/
+/tests/
+/e2e/
+/docs/
+/supabase/
+/.claude/

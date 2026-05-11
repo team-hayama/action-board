@@ -3,6 +3,7 @@ import { CopyrightSection } from "@/components/footer/copyright-section";
 import { FeedbackSection } from "@/components/footer/feedback-section";
 import { LogoSection } from "@/components/footer/logo-section";
 import { SeasonsList } from "@/components/footer/seasons-list";
+import { SiteLinks } from "@/components/footer/site-links";
 
 export default function Footer() {
   return (
@@ -38,6 +39,7 @@ export default function Footer() {
         </div>
 
         <div className="relative z-20">
+          <SiteLinks />
           <SeasonsList />
           <CopyrightSection />
         </div>

@@ -1,126 +1,122 @@
-import { redirect } from "next/navigation";
-import NoticeBoardAlert from "@/components/common/notice-board-alert";
-import Hero from "@/components/top/hero";
-import { PrefectureTeamCard } from "@/components/top/prefecture-team-card";
-import { MetricsWithSuspense } from "@/features/metrics/components/metrics-with-suspense";
-import FeaturedMissions from "@/features/missions/components/featured-missions";
-import MissionsByCategory from "@/features/missions/components/missions-by-category";
-import { hasFeaturedMissions } from "@/features/missions/services/missions";
-import RankingSection from "@/features/ranking/components/ranking-section";
-import Activities from "@/features/user-activity/components/activities";
-import { getUnnotifiedBadges } from "@/features/user-badges/services/get-unnotified-badges";
-import { BadgeNotificationCheck } from "@/features/user-badges-notification/components/badge-notification-check";
-import { LevelUpCheck } from "@/features/user-level/components/level-up-check";
-import { checkLevelUpNotification } from "@/features/user-level/loaders/level-up-loaders";
-import {
-  getUser,
-  hasPrivateProfile,
-} from "@/features/user-profile/services/profile";
-import { getCurrentSeasonId } from "@/lib/loaders/seasons-loaders";
+import Image from "next/image";
+import Link from "next/link";
+import { OpinionForm } from "@/app/opinions/_components/OpinionForm";
+import { ReactionBar } from "@/app/opinions/_components/ReactionBar";
+import { listOpinions } from "@/lib/services/opinions";
+import { createClient } from "@/lib/supabase/client";
 import { generateRootMetadata } from "@/lib/utils/metadata";
 
-// メタデータ生成を外部関数に委譲
+export const dynamic = "force-dynamic";
+
 export const generateMetadata = generateRootMetadata;
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ ref?: string }>;
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleString("ja-JP");
+}
+
+function authorLabel(o: {
+  author: { name: string | null } | null;
+  display_name: string | null;
 }) {
-  const params = await searchParams;
-  const _referralCode = params.ref;
+  return o.author?.name ?? o.display_name ?? "匿名";
+}
 
-  const user = await getUser();
+export default async function Home(_props: {
+  searchParams: Promise<{ ref?: string; preview?: string }>;
+}) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isLoggedIn = Boolean(user);
 
-  // レベルアップ通知とバッジ通知をチェック
-  let levelUpNotification = null;
-  let badgeNotifications = null;
-
-  if (user) {
-    const hasProfile = await hasPrivateProfile(user.id);
-    if (!hasProfile) {
-      redirect("/settings/profile?new=true");
-    }
-
-    // 現在のシーズンIDを取得
-    const currentSeasonId = await getCurrentSeasonId();
-
-    // レベルアップ通知をチェック
-    // 自動ミッション（紹介など）でレベルアップした場合の通知を表示するため有効化
-    const levelUpCheck = await checkLevelUpNotification();
-    if (levelUpCheck.shouldNotify && levelUpCheck.levelUp) {
-      levelUpNotification = levelUpCheck.levelUp;
-    }
-
-    // バッジ通知をチェック（現在のシーズンのみ）
-    const unnotifiedBadges = await getUnnotifiedBadges(
-      user.id,
-      currentSeasonId ?? undefined,
-    );
-    if (unnotifiedBadges.length > 0) {
-      badgeNotifications = unnotifiedBadges;
-    }
-  }
-
-  //フューチャードミッションの存在確認
-  const showFeatured = await hasFeaturedMissions();
+  const opinions = await listOpinions();
 
   return (
     <div className="flex flex-col min-h-screen w-full">
-      {/* レベルアップ通知 */}
-      {levelUpNotification && (
-        <LevelUpCheck levelUpData={levelUpNotification} />
-      )}
-
-      {/* バッジ通知 */}
-      {badgeNotifications && (
-        <BadgeNotificationCheck badgeData={badgeNotifications} />
-      )}
-
-      {/* ヒーローセクション */}
-      <section className="relative">
-        <Hero />
-      </section>
-      {/* 注意書き */}
-      <NoticeBoardAlert />
-
-      {/* 都道府県対抗ランキング導線 */}
-      {user != null && (
-        <section className="py-4 md:py-8">
-          <div className="w-full max-w-lg mx-auto px-4">
-            <PrefectureTeamCard />
+      <section className="relative w-full bg-linear-to-b from-[#64d8c6] to-[#bcecd3] overflow-hidden mt-[-96px] pt-32 pb-12">
+        <div className="relative z-10 px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="flex justify-center mb-6">
+              <Image
+                src="/img/logo.png"
+                alt="チームはやま"
+                width={143}
+                height={120}
+                sizes="100vw"
+                className="h-[96px] w-auto"
+                priority
+              />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+              アクションボード
+            </h1>
+            <p className="text-sm md:text-base font-bold text-gray-800 mb-6 px-3">
+              テクノロジーで政治をかえる。あなたと一緒に未来をつくる。
+            </p>
+            <p className="text-sm md:text-base text-gray-800/90 px-3">
+              まずはあなたのご意見を聞かせてください。
+              <br className="hidden sm:block" />
+              葉山町をもっと良くするためのアイデア・困りごと・要望を、
+              ログインなしで投稿できます。
+            </p>
           </div>
-        </section>
-      )}
-
-      {/* メトリクスセクション */}
-      <MetricsWithSuspense />
-
-      {/* アクティビティセクション */}
-      <section className="py-12 md:py-16 bg-background">
-        <Activities />
+        </div>
       </section>
 
-      {/* ランキングセクション */}
-      <section className="md:py-16 bg-background">
-        <RankingSection />
-      </section>
-      <div className="w-full md:container md:mx-auto">
-        {/* フューチャードミッションセクション */}
-        {showFeatured && (
-          <section className="py-12 md:py-16 bg-background">
-            <FeaturedMissions userId={user?.id} showAchievedMissions={true} />
-          </section>
-        )}
+      <section className="py-8 md:py-12 bg-background">
+        <div className="mx-auto max-w-3xl space-y-6 p-4">
+          <h2 className="text-xl md:text-2xl font-bold">ご意見を投稿する</h2>
+          <OpinionForm isLoggedIn={isLoggedIn} />
 
-        {/* ミッションセクション */}
-      </div>
-      <section className="py-12 md:py-16 bg-background">
-        <MissionsByCategory
-          userId={user?.id}
-          showAchievedMissions={true}
-          id="missions"
-        />
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold pt-4">最近のご意見</h3>
+            {opinions.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                まだ投稿がありません。最初の投稿をしてみましょう。
+              </p>
+            )}
+            {opinions.map((o) => (
+              <article key={o.id} className="space-y-2 rounded-lg border p-4">
+                <header className="flex items-center justify-between">
+                  <Link
+                    href={`/opinions/${o.id}`}
+                    className="text-lg font-semibold hover:underline"
+                  >
+                    {o.title}
+                  </Link>
+                  <span className="text-xs text-muted-foreground">
+                    {formatDate(o.created_at)}
+                  </span>
+                </header>
+                <p className="text-sm text-muted-foreground">
+                  {authorLabel(o)}
+                  {o.author?.address_prefecture
+                    ? `・${o.author.address_prefecture}`
+                    : ""}
+                </p>
+                <p className="line-clamp-3 whitespace-pre-wrap text-sm">
+                  {o.body}
+                </p>
+                <div className="flex items-center justify-between gap-2">
+                  <ReactionBar
+                    targetType="opinion"
+                    targetId={o.id}
+                    opinionIdForRevalidate={o.id}
+                    reactions={o.reactions}
+                    disabled={!isLoggedIn}
+                  />
+                  <Link
+                    href={`/opinions/${o.id}`}
+                    className="text-sm text-muted-foreground hover:underline"
+                  >
+                    💬 {o.comment_count}
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
     </div>
   );
